@@ -3,6 +3,13 @@
 set -e
 
 PHONE_ADB_SERIAL_NUMBER=${PHONE_ADB_SERIAL_NUMBER:-paste_yours_here} # The adb serial number can be found by running `adb devices`.
+FASTBOOT_NEEDS_ROOT=${FASTBOOT_NEEDS_ROOT:-false}
+
+if [[ $FASTBOOT_NEEDS_ROOT = true ]]; then
+    FASTBOOT="sudo fastboot"
+else
+    FASTBOOT="fastboot"
+fi
 
 print_message() {
     printf "$1\n"
@@ -19,7 +26,7 @@ check_phone_is_connected() {
 }
 
 check_phone_is_in_fastboot_mode() {
-    fastboot devices | grep --silent "$PHONE_ADB_SERIAL_NUMBER"
+    $FASTBOOT devices | grep --silent "$PHONE_ADB_SERIAL_NUMBER"
 }
 
 get_lineage_version() {
@@ -138,11 +145,11 @@ wait_for_phone_to_be_in_fastboot() {
 }
 
 flash_patched_boot_image() {
-    fastboot -s "$PHONE_ADB_SERIAL_NUMBER" flash boot /tmp/patched-boot.img
+    $FASTBOOT -s "$PHONE_ADB_SERIAL_NUMBER" flash boot /tmp/patched-boot.img
 }
 
 reboot_phone() {
-    fastboot -s "$PHONE_ADB_SERIAL_NUMBER" reboot
+    $FASTBOOT -s "$PHONE_ADB_SERIAL_NUMBER" reboot
 }
 
 check_magisk_folder() {
