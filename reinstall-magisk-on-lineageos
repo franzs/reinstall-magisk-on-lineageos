@@ -22,7 +22,7 @@ check_phone_is_connected() {
         exit 1
     fi
     print_message "Operations will be performed on:"
-    adb devices -l | grep $PHONE_ADB_SERIAL_NUMBER
+    adb devices -l | grep "$PHONE_ADB_SERIAL_NUMBER"
 }
 
 check_phone_is_in_fastboot_mode() {
@@ -92,8 +92,8 @@ extract_boot_image_from_payload_file() {
     fi
     # For cases in which the repo has already been cloned, I prefer to create a random directory name to clone into, instead of deleting any file or directory on the user's machine.
     scripts_directory_name="scripts_$(generate_random_alnum_string_of_length_6)"
-    git clone https://github.com/LineageOS/scripts /tmp/$scripts_directory_name
-    python /tmp/$scripts_directory_name/update-payload-extractor/extract.py --partitions boot --output_dir /tmp/ /tmp/payload.bin
+    git clone https://github.com/LineageOS/scripts "/tmp/$scripts_directory_name"
+    python "/tmp/$scripts_directory_name/update-payload-extractor/extract.py" --partitions boot --output_dir /tmp/ /tmp/payload.bin
 }
 
 extract_boot_image_from_payload_based_ota() {
