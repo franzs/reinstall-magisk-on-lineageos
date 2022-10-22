@@ -44,8 +44,7 @@ get_device_downloads_page() {
 get_build_url() {
     curl --no-progress-meter "$(get_device_downloads_page)" |
         grep --only-matching --ignore-case \
-            "https://mirrorbits.lineageos.org/[^\"]*"$(
-            )"$(get_lineage_version)-signed.zip" |
+            "https://mirrorbits.lineageos.org/full/[^\"]*$(get_lineage_version)-signed.zip" |
         head -1
 }
 
