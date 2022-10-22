@@ -63,6 +63,10 @@ extract_boot_image_from_file_based_ota() {
     exit 1
 }
 
+check_python_protobuf() {
+    python3 -c "import google.protobuf" 2> /dev/null
+}
+
 install_python_protobuf() {
     sudo python3 -m pip install protobuf
 }
@@ -76,7 +80,9 @@ generate_random_alnum_string_of_length_6() {
 }
 
 extract_boot_image_from_payload_file() {
-    install_python_protobuf
+    if ! check_python_protobuf; then
+        install_python_protobuf
+    fi
     # For cases in which the repo has already been cloned, I prefer to create a random directory name to clone into, instead of deleting any file or directory on the user's machine.
     scripts_directory_name="scripts_$(generate_random_alnum_string_of_length_6)"
     git clone https://github.com/LineageOS/scripts /tmp/$scripts_directory_name
